@@ -1,1 +1,1 @@
-# crossplane-aws-xrs
+# Crossplane: Composite Resources Examples for AWS

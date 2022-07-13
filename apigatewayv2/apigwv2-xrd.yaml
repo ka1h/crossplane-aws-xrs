@@ -1,0 +1,35 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xapigatewaysv2.aws.ka1.io
+spec:
+  group: aws.ka1.io
+  names:
+    kind: XAPIGatewayV2
+    plural: xapigatewaysv2
+  claimNames:
+    kind: APIGatewayV2
+    plural: apigatewaysv2
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  name:
+                    type: string
+                required:
+                - name
+          status:
+            type: object
+            properties:
+              apiId:
+                type: string

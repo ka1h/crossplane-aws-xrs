@@ -1,0 +1,12 @@
+apiVersion: aws.ka1.io/v1alpha1
+kind: XAPIGatewayV2
+metadata:
+  name: apigwv2-composition-example
+spec:
+  parameters:
+    name: apigwv2-composition-example
+  # compositionRef:
+  #   name: production
+  writeConnectionSecretToRef:
+    namespace: crossplane-system
+    name: my-db-connection-details

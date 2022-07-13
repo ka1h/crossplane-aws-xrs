@@ -1,0 +1,48 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: apigwv2
+  labels:
+    crossplane.io/xrd: xapigatewaysv2.aws.ka1.io
+    provider: aws-provider-config
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: aws.ka1.io/v1alpha1
+    kind: XAPIGatewayV2
+  resources:
+  - name: apigwv2
+    base:
+      apiVersion: apigatewayv2.aws.crossplane.io/v1alpha1
+      kind: API
+      spec:
+        forProvider:
+          region: eu-central-1
+          protocolType: HTTP
+        providerConfigRef:
+          name: aws-provider-config
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.name
+      toFieldPath: spec.forProvider.name
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.atProvider.apiID
+      toFieldPath: status.apiId
+      policy:
+        fromFieldPath: Required
+  - name: apigwv2-route
+    base:
+      apiVersion: apigatewayv2.aws.crossplane.io/v1alpha1
+      kind: Route
+      spec:
+        forProvider:
+          # apiId: apiId-placeholder
+          region: eu-central-1
+          routeKey: "GET /route"
+          # target: "integrations/fvq7y4a"
+        providerConfigRef:
+          name: aws-provider-config
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: status.apiId
+      toFieldPath: spec.forProvider.apiId
